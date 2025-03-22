@@ -1,7 +1,7 @@
 "use client";
 
 import { TransactionType } from "@/lib/types";
-import { ReactNode } from "react";
+import { ReactNode, useCallback } from "react";
 import {
   Dialog,
   DialogContent,
@@ -25,6 +25,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import CategoryPicker from "./CategoryPicker";
 
 interface Props {
   children: ReactNode;
@@ -39,6 +40,12 @@ function CreateTransactionDailog({ children, type }: Props) {
       date: new Date(),
     },
   });
+  const handleCategoryChange = useCallback(
+    (value: string) => {
+      form.setValue("category", value);
+    },
+    [form]
+  );
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
@@ -89,6 +96,27 @@ function CreateTransactionDailog({ children, type }: Props) {
                 </FormItem>
               )}
             />
+
+            <div className="flex items-center justify-between gap-2">
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <FormControl>
+                      <CategoryPicker
+                        type={type}
+                        onChange={handleCategoryChange}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Select a category for this transaction
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+            </div>
           </form>
         </Form>
       </DialogContent>

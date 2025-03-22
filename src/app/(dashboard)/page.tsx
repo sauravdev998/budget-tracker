@@ -27,6 +27,7 @@ async function page() {
               <Button
                 variant="default"
                 className="border border-emerald-500 bg-emerald-950 text-white hover:bg-emerald-700 hover:text-white"
+                role="dialog"
               >
                 New income
               </Button>
@@ -36,6 +37,7 @@ async function page() {
               <Button
                 variant="default"
                 className="border border-rose-500 bg-rose-950 text-white hover:bg-rose-700 hover:text-white"
+                role="dialog"
               >
                 New expense
               </Button>
