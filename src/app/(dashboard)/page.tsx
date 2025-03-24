@@ -20,7 +20,7 @@ async function page() {
   return (
     <div className="h-full bg-background">
       <div className="border-b bg-card">
-        <div className="container flex flex-wrap items-center justify-between gap-6 py-8 px-8">
+        <div className=" flex flex-wrap items-center justify-between gap-6 py-8 px-8">
           <p className="text-3xl font-black">Hello, {user.firstName}! 👋</p>
           <div className="flex items-center gap-3">
             <CreateTransactionDailog type="income">

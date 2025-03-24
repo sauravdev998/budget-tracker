@@ -1,10 +1,12 @@
 "use client";
 
 import { TransactionType } from "@/lib/types";
-import { ReactNode, useCallback } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -23,10 +25,23 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import CategoryPicker from "./CategoryPicker";
-
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
+import { CalendarIcon, Loader2 } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createTransactions } from "../_actions/transactions";
+import { toast } from "sonner";
+import { dateToUtcDate } from "@/lib/helper";
 interface Props {
   children: ReactNode;
   type: TransactionType;
@@ -46,8 +61,39 @@ function CreateTransactionDailog({ children, type }: Props) {
     },
     [form]
   );
+
+  const queryClient = useQueryClient();
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: createTransactions,
+    onSuccess: () => {
+      toast.success("Transaction Created Successfully 🎉", {
+        id: "create-transaction",
+      });
+      form.reset({
+        type,
+        description: "",
+        amount: 0,
+        date: new Date(),
+        category: undefined,
+      });
+      // after creating a transaction we need to invalidate the overview query which will refetch data in home page
+      queryClient.invalidateQueries({
+        queryKey: ["overview"],
+      });
+      setOpen((prv) => !prv);
+    },
+  });
+  const onSubmit = useCallback((values: CreateTransactionSchemaType) => {
+    toast.loading("creating trnasaction...", {
+      id: "create-transaction",
+    });
+    mutate({ ...values, date: dateToUtcDate(values.date) });
+  }, []);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -65,7 +111,11 @@ function CreateTransactionDailog({ children, type }: Props) {
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form action="" className="space-y-4">
+          <form
+            action=""
+            className="space-y-4"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
             <FormField
               control={form.control}
               name="description"
@@ -102,7 +152,7 @@ function CreateTransactionDailog({ children, type }: Props) {
                 control={form.control}
                 name="amount"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="flex flex-col">
                     <FormLabel>Category</FormLabel>
                     <FormControl>
                       <CategoryPicker
@@ -116,9 +166,69 @@ function CreateTransactionDailog({ children, type }: Props) {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Transaction date</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w[200px] pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto w-4 h-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={(value) => {
+                            if (!value) return;
+                            field.onChange;
+                          }}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormDescription>
+                      select a date for this transaction
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
           </form>
         </Form>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => {
+                form.reset();
+              }}
+            >
+              Cancel
+            </Button>
+          </DialogClose>
+          <Button onClick={form.handleSubmit(onSubmit)} disabled={isPending}>
+            {!isPending && "Create"}
+            {isPending && <Loader2 className="animate-spin" />}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
