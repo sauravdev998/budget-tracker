@@ -3,13 +3,14 @@ import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import CreateTransactionDailog from "./_components/CreateTransactionDialog";
+import Overview from "./_components/Overview";
 
 async function page() {
   const user = await currentUser();
   if (!user) {
     redirect("/sign-in");
   }
-  const userSettings = prisma.userSettings.findUnique({
+  const userSettings = await prisma.userSettings.findUnique({
     where: {
       userId: user.id,
     },
@@ -45,6 +46,7 @@ async function page() {
           </div>
         </div>
       </div>
+      <Overview userSettings={userSettings} />
     </div>
   );
 }
