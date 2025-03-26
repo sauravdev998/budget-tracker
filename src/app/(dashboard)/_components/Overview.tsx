@@ -6,6 +6,7 @@ import { UserSettings } from "@prisma/client";
 import { differenceInDays, startOfMonth } from "date-fns";
 import { useState } from "react";
 import { toast } from "sonner";
+import StateCard from "./StatsCard";
 
 interface Props {
   userSettings: UserSettings;
@@ -38,6 +39,11 @@ function Overview({ userSettings }: Props) {
           />
         </div>
       </div>
+      <StateCard
+        userSettings={userSettings}
+        from={dateRange.from}
+        to={dateRange.to}
+      />
     </>
   );
 }
