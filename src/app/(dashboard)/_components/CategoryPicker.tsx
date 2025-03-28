@@ -41,14 +41,14 @@ function CategoryPicker({ type, onChange }: Props) {
       fetch(`/api/categories?type=${type}`).then((response) => response.json()),
   });
   const selectedCategory = categoryQuery.data?.find(
-    (category: Category) => category.name === value
+    (category: Category) => category.name === value,
   );
   const succesCallback = useCallback(
     (category: Category) => {
       setValue(category.name);
       setOpen((prv) => !prv);
     },
-    [setValue, setOpen]
+    [setValue, setOpen],
   );
   return (
     <Popover>
@@ -77,7 +77,7 @@ function CategoryPicker({ type, onChange }: Props) {
           <CreateCategoryDialog type={type} successCallback={succesCallback} />
           <CommandEmpty>
             <p>Category not found</p>
-            <p className="text-xs text-muted-foreground"></p>
+            <p className="text-muted-foreground text-xs"></p>
           </CommandEmpty>
           <CommandGroup>
             <CommandList>
@@ -93,8 +93,8 @@ function CategoryPicker({ type, onChange }: Props) {
                     <CategoryRow category={category} />
                     <Check
                       className={cn(
-                        "mr-2 w-4 h-4 opacity-0",
-                        value === category.name && "opacity-100"
+                        "mr-2 h-4 w-4 opacity-0",
+                        value === category.name && "opacity-100",
                       )}
                     />
                   </CommandItem>

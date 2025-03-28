@@ -89,7 +89,7 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
       });
       mutate(value);
     },
-    [mutate]
+    [mutate],
   );
   const theme = useTheme();
   return (
@@ -98,9 +98,9 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
         <Button
           variant="ghost"
           role="dialog"
-          className="flex w-full border-separate items-center justify-start rounded-none border-b p-3 text-muted-foreground"
+          className="text-muted-foreground flex w-full border-separate items-center justify-start rounded-none border-b p-3"
         >
-          <PlusSquare className="mr-2 w-4 h-4" />
+          <PlusSquare className="mr-2 h-4 w-4" />
           Create new
         </Button>
       </DialogTrigger>
@@ -111,7 +111,7 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
             <span
               className={cn(
                 "m-1",
-                type === "income" ? "text-emerald-500" : "text-rose-500"
+                type === "income" ? "text-emerald-500" : "text-rose-500",
               )}
             ></span>
           </DialogTitle>
@@ -152,7 +152,7 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
                               <span role="img" className="text-5xl">
                                 {field.value}
                               </span>
-                              <p className="text-xs text-muted-foreground">
+                              <p className="text-muted-foreground text-xs">
                                 Click to change
                               </p>
                             </div>
@@ -162,7 +162,7 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
                                 size={48}
                                 className="h-[48px] w-[48px]"
                               />
-                              <p className="text-xs text-muted-foreground">
+                              <p className="text-muted-foreground text-xs">
                                 Click to select
                               </p>
                             </div>

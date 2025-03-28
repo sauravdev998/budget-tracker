@@ -32,7 +32,7 @@ function StateCard({ userSettings, from, to }: Props) {
   const balence = income - expense;
 
   return (
-    <div className="relative flex w-full flex-wrap gap-2 px-8 md:flex-nowrap">
+    <div className="relative flex w-full flex-wrap gap-2 md:flex-nowrap">
       <SkeletonWrapper isLoading={StatsQuery.isFetching}>
         <StatCard
           formatter={formatter}

@@ -59,7 +59,7 @@ function CreateTransactionDailog({ children, type }: Props) {
     (value: string) => {
       form.setValue("category", value);
     },
-    [form]
+    [form],
   );
 
   const queryClient = useQueryClient();
@@ -102,7 +102,7 @@ function CreateTransactionDailog({ children, type }: Props) {
             <span
               className={cn(
                 "m-1",
-                type === "income" ? "text-emerald-500" : "text-rose-500"
+                type === "income" ? "text-emerald-500" : "text-rose-500",
               )}
             >
               {type}
@@ -179,7 +179,7 @@ function CreateTransactionDailog({ children, type }: Props) {
                             variant="outline"
                             className={cn(
                               "pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
+                              !field.value && "text-muted-foreground",
                             )}
                           >
                             {field.value ? (
@@ -187,7 +187,7 @@ function CreateTransactionDailog({ children, type }: Props) {
                             ) : (
                               <span>Pick a date</span>
                             )}
-                            <CalendarIcon className="ml-auto w-4 h-4 opacity-50" />
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>

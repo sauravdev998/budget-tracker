@@ -5,7 +5,7 @@ type props = {
 };
 function layout({ children }: props) {
   return (
-    <div className="relative flex flex-col h-screen w-full">
+    <div className="relative flex h-screen w-full flex-col">
       <Navbar /> <div className="w-full">{children}</div>
     </div>
   );

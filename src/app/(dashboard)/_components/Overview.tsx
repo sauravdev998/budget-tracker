@@ -7,6 +7,7 @@ import { differenceInDays, startOfMonth } from "date-fns";
 import { useState } from "react";
 import { toast } from "sonner";
 import StateCard from "./StatsCard";
+import CategoriesStats from "./CategoriesStats";
 
 interface Props {
   userSettings: UserSettings;
@@ -18,7 +19,7 @@ function Overview({ userSettings }: Props) {
   });
   return (
     <>
-      <div className="flex flex-wrap items-end justify-between gap-2 py-6 px-8">
+      <div className="flex flex-wrap items-end justify-between gap-2 px-8 py-6">
         <h2 className="text-3xl font-bold">Overview</h2>
         <div className="flex items-center gap-3">
           <DateRangePicker
@@ -30,7 +31,7 @@ function Overview({ userSettings }: Props) {
               if (!from || !to) return;
               if (differenceInDays(to, from) > MAX_DATE_RANGE_DAYS) {
                 toast.error(
-                  `the selected date range is too big max allowd range is ${MAX_DATE_RANGE_DAYS} days`
+                  `the selected date range is too big max allowd range is ${MAX_DATE_RANGE_DAYS} days`,
                 );
                 return;
               }
@@ -39,11 +40,18 @@ function Overview({ userSettings }: Props) {
           />
         </div>
       </div>
-      <StateCard
-        userSettings={userSettings}
-        from={dateRange.from}
-        to={dateRange.to}
-      />
+      <div className="flex w-full flex-col items-center gap-2 px-8">
+        <StateCard
+          userSettings={userSettings}
+          from={dateRange.from}
+          to={dateRange.to}
+        />
+        <CategoriesStats
+          userSettings={userSettings}
+          from={dateRange.from}
+          to={dateRange.to}
+        />
+      </div>
     </>
   );
 }
