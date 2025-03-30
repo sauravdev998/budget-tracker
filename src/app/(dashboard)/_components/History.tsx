@@ -243,7 +243,7 @@ function TooltipRow({
             preserveValue
             end={value}
             decimals={0}
-            formattingFn={(value) => formattor.format(value)}
+            formattingFn={formattingFn}
             className="text-sm"
           />
         </div>
