@@ -17,6 +17,7 @@ import CreateCategoryDialog from "../_components/CreateCategoryDialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import DeleteCategoryDialog from "../_components/DeleteCategoryDialog";
 
 function Page() {
   return (
@@ -61,7 +62,7 @@ function CategoryList({ type }: { type: TransactionType }) {
   });
   const DataAvalable = categoriesQuery.data && categoriesQuery.data.length > 0;
   return (
-    <SkeletonWrapper isLoading={categoriesQuery.isFetching}>
+    <SkeletonWrapper isLoading={categoriesQuery.isLoading}>
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between gap-2">
@@ -131,13 +132,18 @@ function CategoryCard({ category }: { category: Category }) {
         </span>
         <span>{category.name}</span>
       </div>
-      <Button
-        variant="secondary"
-        className="rounded-t-nonw text-muted-foreground flex w-full border-separate items-center gap-2 hover:bg-red-500/20"
-      >
-        <TrashIcon className="h-4 w-4" />
-        Remove
-      </Button>
+      <DeleteCategoryDialog
+        trigger={
+          <Button
+            variant="secondary"
+            className="rounded-t-nonw text-muted-foreground flex w-full border-separate items-center gap-2 hover:bg-red-500/20"
+          >
+            <TrashIcon className="h-4 w-4" />
+            Remove
+          </Button>
+        }
+        category={category}
+      />
     </div>
   );
 }
