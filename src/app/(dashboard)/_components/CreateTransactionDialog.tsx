@@ -196,8 +196,9 @@ function CreateTransactionDailog({ children, type }: Props) {
                           mode="single"
                           selected={field.value}
                           onSelect={(value) => {
+                            console.log(value);
                             if (!value) return;
-                            field.onChange;
+                            field.onChange(value);
                           }}
                         />
                       </PopoverContent>
